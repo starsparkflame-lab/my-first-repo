@@ -19,17 +19,33 @@
       background: #000;
       object-fit: contain;
     }
-    @media (orientation: portrait) {
-      video { object-fit: contain; }
-    }
   </style>
 </head>
 <body>
-  <video id="video" autoplay playsinline controls preload="auto">
+  <video id="video" autoplay playsinline controls preload="auto" fetchpriority="high">
     <source src="../548db830f36005f439fe144938046798.mp4" type="video/mp4">
   </video>
   <script>
     const video = document.querySelector('#video');
+    const source = video.querySelector('source');
+    let retried = false;
+
+    video.addEventListener('error', () => {
+      if (retried) return;
+      retried = true;
+      const resumeAt = video.currentTime || 0;
+      const retryUrl = new URL(source.getAttribute('src'), location.href);
+      retryUrl.searchParams.set('retry', Date.now());
+      source.src = retryUrl.href;
+      video.load();
+      video.addEventListener('loadedmetadata', () => {
+        if (resumeAt > 0 && Number.isFinite(video.duration)) {
+          video.currentTime = Math.min(resumeAt, video.duration);
+        }
+        video.play().catch(() => {});
+      }, { once: true });
+    });
+
     video.play().catch(() => {
       // Some browsers require a tap before playback begins.
     });
