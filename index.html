@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#151221">
+  <meta name="description" content="冬至快乐，愿你三冬暖，愿你春不寒。">
+  <title>冬至快乐</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #111117;
+      color: #f7f5f2;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+    * { box-sizing: border-box; }
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      background:
+        radial-gradient(ellipse at 50% 65%, rgba(181, 83, 54, .2), transparent 38%),
+        radial-gradient(ellipse at 50% 15%, rgba(94, 83, 150, .25), transparent 45%),
+        linear-gradient(180deg, #151221 0%, #21182a 58%, #251923 100%);
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 100%, #ffb56a12, transparent 52%);
+      animation: hearth-glow 7s ease-in-out infinite;
+    }
+    .particle-field {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: 28px clamp(22px, 5vw, 72px) 24px;
+    }
+    .moon {
+      position: fixed;
+      top: 17%;
+      right: 20%;
+      width: 58px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle at 34% 32%, #fff9dd, #f1d69b 56%, #d9aa73 100%);
+      box-shadow: 0 0 28px #ffdc9c55, 0 0 90px #f3bd8140;
+      opacity: .76;
+      animation: moon-breathe 6s ease-in-out infinite;
+    }
+    .moon::after {
+      content: "";
+      position: absolute;
+      top: -5px;
+      right: -12px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #191525;
+    }
+    .mountains {
+      position: fixed;
+      z-index: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: clamp(110px, 23vh, 240px);
+      overflow: hidden;
+      pointer-events: none;
+      opacity: .72;
+    }
+    .mountains::before, .mountains::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+    }
+    .mountains::before {
+      background: linear-gradient(180deg, #373047, #201b2b);
+      clip-path: polygon(0 52%, 12% 24%, 22% 47%, 37% 13%, 51% 49%, 67% 23%, 78% 46%, 91% 17%, 100% 42%, 100% 100%, 0 100%);
+      opacity: .68;
+    }
+    .mountains::after {
+      background: linear-gradient(180deg, #292332, #171520);
+      clip-path: polygon(0 65%, 16% 40%, 29% 67%, 46% 36%, 60% 67%, 76% 39%, 88% 65%, 100% 44%, 100% 100%, 0 100%);
+    }
+    header, footer { display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; color: #fff3e5; text-decoration: none; font-size: 15px; font-weight: 650; letter-spacing: .02em; }
+    .brand-mark { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid #ffd7a033; border-radius: 12px; background: #ffcf7620; color: #ffd58c; font-size: 18px; }
+    .status { display: inline-flex; align-items: center; gap: 8px; color: #d6bdad; font-size: 12px; }
+    .status::before { content: ""; width: 7px; height: 7px; border-radius: 99px; background: #f5b45d; box-shadow: 0 0 12px #f5b45d88; }
+    main { position: relative; width: min(100%, 960px); margin: 0 auto; align-self: center; padding: 70px 0 76px; text-align: center; }
+    .eyebrow { margin: 0 0 21px; color: #e9b879; font-size: 12px; font-weight: 650; letter-spacing: .3em; }
+    h1 { margin: 0; color: #fff2df; font-family: "Songti SC", "STSong", "Noto Serif SC", serif; font-size: clamp(60px, 10vw, 112px); line-height: 1.12; letter-spacing: .08em; font-weight: 600; text-shadow: 0 0 30px #ffc66d40; animation: title-arrive 1.2s cubic-bezier(.2,.8,.2,1) both, title-glow 4s ease-in-out 1.2s infinite; }
+    h1 span { display: inline-block; color: #f5c777; animation: letters-rise .9s .35s both; }
+    .intro { max-width: 560px; margin: 22px auto 0; color: #ddc9bc; font-family: "Songti SC", "STSong", "Noto Serif SC", serif; font-size: clamp(15px, 2vw, 18px); line-height: 1.85; letter-spacing: .12em; }
+    .title-rule { display: flex; align-items: center; justify-content: center; gap: 11px; width: 132px; margin: 19px auto 0; color: #f0c274; font-size: 11px; opacity: 0; animation: fade-in .8s .8s forwards; }
+    .title-rule::before, .title-rule::after { content: ""; width: 42px; height: 1px; background: linear-gradient(90deg, transparent, #d99c5c); }
+    .title-rule::after { transform: rotate(180deg); }
+    .shooting-star { position: fixed; z-index: 0; top: 18%; left: -10%; width: 110px; height: 1px; pointer-events: none; background: linear-gradient(90deg, transparent, #fff0c7, transparent); box-shadow: 0 0 9px #ffdea0; transform: rotate(-22deg); animation: star-cross 1.4s ease-out forwards; }
+    .lantern { position: fixed; z-index: 1; top: 0; width: 78px; height: 124px; transform-origin: top center; animation: lantern-sway 5s ease-in-out infinite; pointer-events: none; }
+    .lantern.left { left: clamp(20px, 8vw, 120px); }
+    .lantern.right { right: clamp(20px, 8vw, 120px); animation-delay: -2.4s; }
+    .lantern::before { content: ""; position: absolute; top: 0; left: 50%; width: 1px; height: 30px; background: #d6a764; }
+    .lantern-body { position: absolute; top: 29px; left: 8px; width: 62px; height: 72px; border: 1px solid #ffd77a99; border-radius: 48% / 28%; background: linear-gradient(90deg, #8f291f, #d64a32 48%, #a32e23); box-shadow: 0 0 28px #ef633b55, inset 8px 0 14px #ffb06422, inset -8px 0 14px #590e1822; }
+    .lantern-body::before, .lantern-body::after { content: ""; position: absolute; left: 6px; right: 6px; height: 5px; border: 1px solid #f3c36c; border-radius: 50%; }
+    .lantern-body::before { top: 5px; }
+    .lantern-body::after { bottom: 5px; }
+    .lantern-mark { position: absolute; inset: 0; display: grid; place-items: center; color: #ffd98b; font-family: serif; font-size: 25px; }
+    .tassel { position: absolute; top: 99px; left: 37px; width: 2px; height: 23px; background: #df9f48; }
+    .tassel::after { content: ""; position: absolute; left: -4px; bottom: 0; width: 10px; height: 9px; background: repeating-linear-gradient(90deg, #e8aa53 0 1px, transparent 1px 3px); }
+    .tangyuan { position: relative; width: 190px; height: 92px; margin: 40px auto 0; animation: bowl-float 4s ease-in-out infinite; }
+    .bowl { position: absolute; left: 13px; bottom: 0; width: 164px; height: 55px; overflow: hidden; border: 1px solid #f4c68699; border-top: 4px solid #ffdfa8; border-radius: 0 0 78px 78px; background: linear-gradient(180deg, #a74632, #5e2428); box-shadow: 0 13px 28px #09080e88, 0 0 28px #f1a45a22; }
+    .bowl::before { content: ""; position: absolute; top: -17px; left: 0; width: 100%; height: 24px; border-radius: 50%; background: #ffd99a; box-shadow: inset 0 -5px 0 #dc8a53; }
+    .ball { position: absolute; z-index: 1; top: 18px; width: 34px; height: 34px; border-radius: 50%; background: radial-gradient(circle at 32% 27%, #fff9e9, #f3d9ad 64%, #d8ae79); box-shadow: inset -4px -5px 8px #ab774544, 0 4px 12px #ffc98738; animation: tangyuan-bob 2.3s ease-in-out infinite; }
+    .ball:nth-of-type(4) { left: 38px; animation-delay: -.2s; }
+    .ball:nth-of-type(5) { left: 77px; top: 9px; animation-delay: -.9s; }
+    .ball:nth-of-type(6) { left: 116px; animation-delay: -1.5s; }
+    .steam { position: absolute; top: -2px; width: 12px; height: 32px; border-left: 2px solid #ffe5c088; border-radius: 50%; filter: blur(1px); animation: steam-rise 2.8s ease-in-out infinite; }
+    .steam.one { left: 68px; }
+    .steam.two { left: 100px; animation-delay: -1.1s; }
+    .steam.three { left: 128px; animation-delay: -.5s; }
+    .prompt-box { width: min(100%, 620px); margin: 46px auto 0; padding: 16px; border: 1px solid #ffffff20; border-radius: 21px; background: #ffffff0a; box-shadow: 0 24px 80px #0005, inset 0 1px #ffffff0b; text-align: left; backdrop-filter: blur(18px); }
+    textarea { display: block; width: 100%; min-height: 58px; resize: vertical; border: 0; outline: 0; background: transparent; color: #f7f5f2; font: inherit; font-size: 15px; line-height: 1.6; }
+    textarea::placeholder { color: #777582; }
+    .prompt-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 12px; }
+    .hint { color: #777582; font-size: 12px; }
+    button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 42px; padding: 0 17px; border: 0; border-radius: 13px; background: #eee9ff; color: #211b35; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: transform .18s ease, background .18s ease; }
+    button:hover { transform: translateY(-1px); background: #fff; }
+    button:focus-visible, textarea:focus-visible { outline: 2px solid #bba9ff; outline-offset: 4px; }
+    .suggestions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; }
+    .suggestion { padding: 9px 13px; border: 1px solid #ffffff18; border-radius: 99px; background: #ffffff08; color: #aaa8b4; font-size: 12px; cursor: pointer; transition: color .18s ease, border-color .18s ease, background .18s ease; }
+    .suggestion:hover { color: #f7f5f2; border-color: #bba9ff66; background: #bba9ff12; }
+    .message { min-height: 24px; margin: 16px auto 0; color: #c9c2dc; font-size: 13px; }
+    footer { color: #bca99a; font-size: 11px; letter-spacing: .12em; }
+    footer a { color: #e6c48e; text-decoration: none; }
+    footer a:hover { color: #fff2df; }
+    @keyframes title-arrive { from { opacity: 0; transform: translateY(22px); filter: blur(8px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+    @keyframes letters-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fade-in { to { opacity: .76; } }
+    @keyframes title-glow { 0%, 100% { text-shadow: 0 0 24px #ffc66d30; } 50% { text-shadow: 0 0 42px #ffc66d75, 0 0 90px #d9523930; } }
+    @keyframes hearth-glow { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+    @keyframes moon-breathe { 0%, 100% { transform: translateY(0); opacity: .68; } 50% { transform: translateY(-7px); opacity: .9; } }
+    @keyframes star-cross { 0% { opacity: 0; transform: translate3d(0,0,0) rotate(-22deg); } 12% { opacity: .9; } 100% { opacity: 0; transform: translate3d(120vw, 42vh, 0) rotate(-22deg); } }
+    @keyframes lantern-sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+    @keyframes bowl-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+    @keyframes tangyuan-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes steam-rise { 0% { opacity: 0; transform: translateY(9px) scaleX(.8); } 40% { opacity: .7; } 100% { opacity: 0; transform: translateY(-12px) scaleX(1.35); } }
+    @media (max-width: 520px) {
+      .page { padding-top: 18px; padding-bottom: 18px; }
+      main { padding: 82px 0 60px; }
+      .lantern { transform: scale(.72); }
+      .lantern.left { left: 1px; transform-origin: top left; }
+      .lantern.right { right: 1px; transform-origin: top right; }
+      .tangyuan { margin-top: 32px; }
+      footer { gap: 14px; font-size: 10px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <canvas class="particle-field" id="particle-field" aria-hidden="true"></canvas>
+  <div class="moon" aria-hidden="true"></div>
+  <div class="mountains" aria-hidden="true"></div>
+  <div class="lantern left" aria-hidden="true"><div class="lantern-body"><span class="lantern-mark">福</span></div><span class="tassel"></span></div>
+  <div class="lantern right" aria-hidden="true"><div class="lantern-body"><span class="lantern-mark">安</span></div><span class="tassel"></span></div>
+  <div class="page">
+    <header>
+      <a class="brand" href="#top" aria-label="冬至快乐"><span class="brand-mark" aria-hidden="true">❄</span><span>冬至</span></a>
+      <span class="status">人间小团圆</span>
+    </header>
+    <main id="top">
+      <p class="eyebrow">岁末冬深 · 团圆正好</p>
+      <h1>冬至<span>快乐</span></h1>
+      <div class="title-rule" aria-hidden="true">❄</div>
+      <p class="intro">愿你三冬暖，愿你春不寒。<br>愿有人与你立黄昏，有人问你粥可温。</p>
+      <div class="tangyuan" aria-label="一碗热腾腾的汤圆">
+        <span class="steam one"></span><span class="steam two"></span><span class="steam three"></span>
+        <span class="ball"></span><span class="ball"></span><span class="ball"></span><div class="bowl"></div>
+      </div>
+    </main>
+    <footer><span>冬至如年，愿岁岁常欢。</span><span>☾　团圆安康　☽</span></footer>
+  </div>
+  <script>
+    const canvas = document.querySelector('#particle-field');
+    const context = canvas.getContext('2d');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let snowflakes = [];
+    let animationFrame = 0;
+    let width = 0;
+    let height = 0;
+    let pixelRatio = 1;
+
+    function seedSnow() {
+      const count = Math.min(105, Math.max(38, Math.floor((width * height) / 12000)));
+      snowflakes = Array.from({ length: count }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 2.1 + 0.65,
+        speed: Math.random() * 0.38 + 0.14,
+        sway: Math.random() * 0.5 + 0.15,
+        phase: Math.random() * Math.PI * 2,
+        alpha: Math.random() * 0.5 + 0.2
+      }));
+    }
+
+    function resizeCanvas() {
+      const bounds = canvas.getBoundingClientRect();
+      width = bounds.width;
+      height = bounds.height;
+      pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * pixelRatio);
+      canvas.height = Math.round(height * pixelRatio);
+      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      seedSnow();
+      if (reduceMotion.matches) drawSnow(0, false);
+    }
+
+    function drawSnow(time, move = true) {
+      context.clearRect(0, 0, width, height);
+      for (const flake of snowflakes) {
+        const drift = move ? Math.sin(time * 0.00055 + flake.phase) * flake.sway : 0;
+        if (move) {
+          flake.y += flake.speed;
+          flake.x += drift;
+          if (flake.y > height + 5) { flake.y = -5; flake.x = Math.random() * width; }
+          if (flake.x < -5) flake.x = width + 5;
+          if (flake.x > width + 5) flake.x = -5;
+        }
+        context.fillStyle = `rgba(255, 239, 218, ${flake.alpha})`;
+        context.shadowColor = `rgba(255, 220, 170, ${flake.alpha * 0.5})`;
+        context.shadowBlur = flake.radius > 1.8 ? 9 : 4;
+        context.beginPath();
+        context.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
+        context.fill();
+      }
+      context.shadowBlur = 0;
+    }
+
+    function animate(time) {
+      drawSnow(time);
+      animationFrame = requestAnimationFrame(animate);
+    }
+
+    function syncMotionPreference() {
+      cancelAnimationFrame(animationFrame);
+      if (reduceMotion.matches) drawSnow(0, false);
+      else animationFrame = requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', resizeCanvas, { passive: true });
+    reduceMotion.addEventListener('change', syncMotionPreference);
+    resizeCanvas();
+    syncMotionPreference();
+
+    if (!reduceMotion.matches) {
+      window.setInterval(() => {
+        const star = document.createElement('span');
+        star.className = 'shooting-star';
+        star.setAttribute('aria-hidden', 'true');
+        document.body.append(star);
+        star.addEventListener('animationend', () => star.remove(), { once: true });
+      }, 7200);
+    }
+
+  </script>
+</body>
+</html>
+
