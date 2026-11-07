@@ -32,8 +32,8 @@
       inset: 0;
       z-index: 0;
       pointer-events: none;
-      background: radial-gradient(ellipse at 50% 100%, #ffb56a12, transparent 52%);
-      animation: hearth-glow 7s ease-in-out infinite;
+      background: radial-gradient(ellipse at 50% 100%, #ffb56a1b, transparent 52%), radial-gradient(ellipse at 18% 35%, #7b709315, transparent 34%);
+      animation: hearth-glow 6s ease-in-out infinite;
     }
     .particle-field {
       position: fixed;
@@ -108,6 +108,9 @@
     h1 { margin: 0; color: #fff2df; font-family: "Songti SC", "STSong", "Noto Serif SC", serif; font-size: clamp(60px, 10vw, 112px); line-height: 1.12; letter-spacing: .08em; font-weight: 600; text-shadow: 0 0 30px #ffc66d40; animation: title-arrive 1.2s cubic-bezier(.2,.8,.2,1) both, title-glow 4s ease-in-out 1.2s infinite; }
     h1 span { display: inline-block; color: #f5c777; animation: letters-rise .9s .35s both; }
     .intro { max-width: 560px; margin: 22px auto 0; color: #ddc9bc; font-family: "Songti SC", "STSong", "Noto Serif SC", serif; font-size: clamp(15px, 2vw, 18px); line-height: 1.85; letter-spacing: .12em; }
+    .intro .line { display: block; opacity: 0; animation: line-arrive .85s ease-out forwards; }
+    .intro .line:nth-child(1) { animation-delay: .78s; }
+    .intro .line:nth-child(2) { animation-delay: 1.08s; }
     .title-rule { display: flex; align-items: center; justify-content: center; gap: 11px; width: 132px; margin: 19px auto 0; color: #f0c274; font-size: 11px; opacity: 0; animation: fade-in .8s .8s forwards; }
     .title-rule::before, .title-rule::after { content: ""; width: 42px; height: 1px; background: linear-gradient(90deg, transparent, #d99c5c); }
     .title-rule::after { transform: rotate(180deg); }
@@ -116,14 +119,15 @@
     .lantern.left { left: clamp(20px, 8vw, 120px); }
     .lantern.right { right: clamp(20px, 8vw, 120px); animation-delay: -2.4s; }
     .lantern::before { content: ""; position: absolute; top: 0; left: 50%; width: 1px; height: 30px; background: #d6a764; }
-    .lantern-body { position: absolute; top: 29px; left: 8px; width: 62px; height: 72px; border: 1px solid #ffd77a99; border-radius: 48% / 28%; background: linear-gradient(90deg, #8f291f, #d64a32 48%, #a32e23); box-shadow: 0 0 28px #ef633b55, inset 8px 0 14px #ffb06422, inset -8px 0 14px #590e1822; }
+    .lantern-body { position: absolute; top: 29px; left: 8px; width: 62px; height: 72px; border: 1px solid #ffd77a99; border-radius: 48% / 28%; background: linear-gradient(90deg, #8f291f, #d64a32 48%, #a32e23); box-shadow: 0 0 28px #ef633b55, inset 8px 0 14px #ffb06422, inset -8px 0 14px #590e1822; animation: lantern-glow 3.6s ease-in-out infinite; }
     .lantern-body::before, .lantern-body::after { content: ""; position: absolute; left: 6px; right: 6px; height: 5px; border: 1px solid #f3c36c; border-radius: 50%; }
     .lantern-body::before { top: 5px; }
     .lantern-body::after { bottom: 5px; }
     .lantern-mark { position: absolute; inset: 0; display: grid; place-items: center; color: #ffd98b; font-family: serif; font-size: 25px; }
     .tassel { position: absolute; top: 99px; left: 37px; width: 2px; height: 23px; background: #df9f48; }
     .tassel::after { content: ""; position: absolute; left: -4px; bottom: 0; width: 10px; height: 9px; background: repeating-linear-gradient(90deg, #e8aa53 0 1px, transparent 1px 3px); }
-    .tangyuan { position: relative; width: 190px; height: 92px; margin: 40px auto 0; animation: bowl-float 4s ease-in-out infinite; }
+    .tangyuan { position: relative; width: 190px; height: 104px; margin: 40px auto 0; animation: bowl-float 4s ease-in-out infinite; }
+    .tangyuan::after { content: ""; position: absolute; z-index: -1; left: 25px; right: 25px; bottom: -10px; height: 22px; border-radius: 50%; background: #f7b86d55; filter: blur(16px); animation: warmth-pulse 3s ease-in-out infinite; }
     .bowl { position: absolute; left: 13px; bottom: 0; width: 164px; height: 55px; overflow: hidden; border: 1px solid #f4c68699; border-top: 4px solid #ffdfa8; border-radius: 0 0 78px 78px; background: linear-gradient(180deg, #a74632, #5e2428); box-shadow: 0 13px 28px #09080e88, 0 0 28px #f1a45a22; }
     .bowl::before { content: ""; position: absolute; top: -17px; left: 0; width: 100%; height: 24px; border-radius: 50%; background: #ffd99a; box-shadow: inset 0 -5px 0 #dc8a53; }
     .ball { position: absolute; z-index: 1; top: 18px; width: 34px; height: 34px; border-radius: 50%; background: radial-gradient(circle at 32% 27%, #fff9e9, #f3d9ad 64%, #d8ae79); box-shadow: inset -4px -5px 8px #ab774544, 0 4px 12px #ffc98738; animation: tangyuan-bob 2.3s ease-in-out infinite; }
@@ -151,15 +155,18 @@
     footer a:hover { color: #fff2df; }
     @keyframes title-arrive { from { opacity: 0; transform: translateY(22px); filter: blur(8px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
     @keyframes letters-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes line-arrive { from { opacity: 0; transform: translateY(9px); filter: blur(4px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
     @keyframes fade-in { to { opacity: .76; } }
     @keyframes title-glow { 0%, 100% { text-shadow: 0 0 24px #ffc66d30; } 50% { text-shadow: 0 0 42px #ffc66d75, 0 0 90px #d9523930; } }
     @keyframes hearth-glow { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
     @keyframes moon-breathe { 0%, 100% { transform: translateY(0); opacity: .68; } 50% { transform: translateY(-7px); opacity: .9; } }
     @keyframes star-cross { 0% { opacity: 0; transform: translate3d(0,0,0) rotate(-22deg); } 12% { opacity: .9; } 100% { opacity: 0; transform: translate3d(120vw, 42vh, 0) rotate(-22deg); } }
     @keyframes lantern-sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+    @keyframes lantern-glow { 0%, 100% { box-shadow: 0 0 20px #ef633b40, inset 8px 0 14px #ffb06422, inset -8px 0 14px #590e1822; } 50% { box-shadow: 0 0 42px #ff8a4e88, inset 8px 0 14px #ffb06433, inset -8px 0 14px #590e1822; } }
     @keyframes bowl-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
     @keyframes tangyuan-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
     @keyframes steam-rise { 0% { opacity: 0; transform: translateY(9px) scaleX(.8); } 40% { opacity: .7; } 100% { opacity: 0; transform: translateY(-12px) scaleX(1.35); } }
+    @keyframes warmth-pulse { 0%, 100% { opacity: .45; transform: scaleX(.84); } 50% { opacity: .9; transform: scaleX(1.08); } }
     @media (max-width: 520px) {
       .page { padding-top: 18px; padding-bottom: 18px; }
       main { padding: 82px 0 60px; }
@@ -187,7 +194,7 @@
       <p class="eyebrow">岁末冬深 · 团圆正好</p>
       <h1>冬至<span>快乐</span></h1>
       <div class="title-rule" aria-hidden="true">❄</div>
-      <p class="intro">愿你三冬暖，愿你春不寒。<br>愿有人与你立黄昏，有人问你粥可温。</p>
+      <p class="intro"><span class="line">愿你三冬暖，愿你春不寒。</span><span class="line">愿有人与你立黄昏，有人问你粥可温。</span></p>
       <div class="tangyuan" aria-label="一碗热腾腾的汤圆">
         <span class="steam one"></span><span class="steam two"></span><span class="steam three"></span>
         <span class="ball"></span><span class="ball"></span><span class="ball"></span><div class="bowl"></div>
@@ -201,20 +208,22 @@
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     let snowflakes = [];
     let animationFrame = 0;
+    let previousFrameTime = 0;
     let width = 0;
     let height = 0;
     let pixelRatio = 1;
 
     function seedSnow() {
-      const count = Math.min(105, Math.max(38, Math.floor((width * height) / 12000)));
+      const count = Math.min(230, Math.max(90, Math.floor((width * height) / 9000)));
       snowflakes = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        radius: Math.random() * 2.1 + 0.65,
-        speed: Math.random() * 0.38 + 0.14,
-        sway: Math.random() * 0.5 + 0.15,
+        radius: Math.random() * 2.2 + 0.45,
+        speed: Math.random() * 0.72 + 0.2,
+        sway: Math.random() * 0.75 + 0.18,
         phase: Math.random() * Math.PI * 2,
-        alpha: Math.random() * 0.5 + 0.2
+        alpha: Math.random() * 0.52 + 0.18,
+        depth: Math.random()
       }));
     }
 
@@ -230,20 +239,29 @@
       if (reduceMotion.matches) drawSnow(0, false);
     }
 
-    function drawSnow(time, move = true) {
+    function drawSnow(time, move = true, delta = 16) {
       context.clearRect(0, 0, width, height);
       for (const flake of snowflakes) {
-        const drift = move ? Math.sin(time * 0.00055 + flake.phase) * flake.sway : 0;
+        const frameScale = Math.min(delta, 40) / 16;
+        const drift = move ? Math.sin(time * 0.00055 + flake.phase) * flake.sway * frameScale : 0;
         if (move) {
-          flake.y += flake.speed;
+          flake.y += flake.speed * frameScale;
           flake.x += drift;
           if (flake.y > height + 5) { flake.y = -5; flake.x = Math.random() * width; }
           if (flake.x < -5) flake.x = width + 5;
           if (flake.x > width + 5) flake.x = -5;
         }
-        context.fillStyle = `rgba(255, 239, 218, ${flake.alpha})`;
-        context.shadowColor = `rgba(255, 220, 170, ${flake.alpha * 0.5})`;
-        context.shadowBlur = flake.radius > 1.8 ? 9 : 4;
+        context.fillStyle = `rgba(255, 243, 225, ${flake.alpha})`;
+        context.shadowColor = `rgba(255, 220, 170, ${flake.alpha * 0.58})`;
+        context.shadowBlur = flake.depth > 0.72 ? 11 : 4;
+        if (flake.depth > 0.86 && flake.radius > 1.5) {
+          context.strokeStyle = `rgba(255, 239, 218, ${flake.alpha * 0.48})`;
+          context.lineWidth = flake.radius * 0.52;
+          context.beginPath();
+          context.moveTo(flake.x, flake.y - flake.radius * 2.8);
+          context.lineTo(flake.x, flake.y + flake.radius * 2.8);
+          context.stroke();
+        }
         context.beginPath();
         context.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
         context.fill();
@@ -252,12 +270,15 @@
     }
 
     function animate(time) {
-      drawSnow(time);
+      const delta = previousFrameTime ? time - previousFrameTime : 16;
+      previousFrameTime = time;
+      drawSnow(time, true, delta);
       animationFrame = requestAnimationFrame(animate);
     }
 
     function syncMotionPreference() {
       cancelAnimationFrame(animationFrame);
+      previousFrameTime = 0;
       if (reduceMotion.matches) drawSnow(0, false);
       else animationFrame = requestAnimationFrame(animate);
     }
@@ -272,6 +293,10 @@
         const star = document.createElement('span');
         star.className = 'shooting-star';
         star.setAttribute('aria-hidden', 'true');
+        star.style.top = `${8 + Math.random() * 33}%`;
+        star.style.left = `${-20 + Math.random() * 16}%`;
+        star.style.animationDuration = `${1.1 + Math.random() * 0.75}s`;
+        star.style.transform = `rotate(${-16 - Math.random() * 14}deg)`;
         document.body.append(star);
         star.addEventListener('animationend', () => star.remove(), { once: true });
       }, 7200);
